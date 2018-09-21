@@ -1,6 +1,6 @@
 {
   "name": "ol-helpers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Helpers for OpenLayers",
   "main": "index.js",
   "repository": "https://github.com/publicdocs-platform/ol-helpers",

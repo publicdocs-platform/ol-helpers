@@ -31,9 +31,10 @@
 // either expressed or implied, of OpenLayers Contributors.
 //
 
-function tiledVectorLayer(baseUrl, size) {
+function tiledVectorLayer(baseUrl, size, attributions) {
   let source = null;
   source = new ol.source.Vector({
+    attributions: attributions || [],
     loader: function (extent, resolution, projection) {
       let url = baseUrl + '/query?f=geojson&' +
         'returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=' +
