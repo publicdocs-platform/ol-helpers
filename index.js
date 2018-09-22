@@ -31,20 +31,31 @@
 // either expressed or implied, of OpenLayers Contributors.
 //
 
-function tiledVectorLayer(baseUrl, size, attributions) {
+function tiledVectorLayer(baseUrl, size, attributions, args) {
   let source = null;
   source = new ol.source.Vector({
     attributions: attributions || [],
     loader: function (extent, resolution, projection) {
-      let url = baseUrl + '/query?f=geojson&' +
-        'returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=' +
-        encodeURIComponent('{"xmin":' + extent[0] + ',"ymin":' +
-          extent[1] + ',"xmax":' + extent[2] + ',"ymax":' + extent[3] +
-          ',"spatialReference":{"wkid":4326}}') +
-        '&geometryType=esriGeometryEnvelope&inSR=4326&outFields=*' +
-        '&outSR=4326';
+      let props = {
+        f: 'geojson',
+        returnGeometry: true,
+        spatialRel: 'esriSpatialRelIntersects',
+        geometry: JSON.stringify({
+          xmin: extent[0],
+          ymin: extent[1],
+          xmax: extent[2],
+          ymax: extent[3],
+          spatialReference: { wkid: 4326},
+        }),
+        geometryType: 'esriGeometryEnvelope',
+        inSR: 4326,
+        outFields: '*',
+        outSR: 4326,
+      };
+      props = Object.assign(props, args || {});
+      let url = baseUrl + '/query';
       $.ajax({
-        url: url, dataType: 'json', success: function (response) {
+        url: url, data: props, dataType: 'json', success: function (response) {
           if (response.error) {
             alert(response.error.message + '\n' +
               response.error.details.join('\n'));
