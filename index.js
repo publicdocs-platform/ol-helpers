@@ -31,9 +31,9 @@
 // either expressed or implied, of OpenLayers Contributors.
 //
 
-function tiledVectorLayer(baseUrl, size, attributions, args) {
+function tiledVectorLayer(baseUrl, size, attributions, args, opts) {
   let source = null;
-  source = new ol.source.Vector({
+  let base = {
     attributions: attributions || [],
     loader: function (extent, resolution, projection) {
       let props = {
@@ -71,6 +71,8 @@ function tiledVectorLayer(baseUrl, size, attributions, args) {
     strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
       tileSize: size
     }))
-  })
+  };
+  let ret = Object.assign(base, opts || {})
+  source = new ol.source.Vector(ret);
   return source;
 }
