@@ -36,6 +36,11 @@ function tiledVectorLayer(baseUrl, size, attributions, args, opts) {
   let base = {
     attributions: attributions || [],
     loader: function (extent, resolution, projection) {
+      let projCode = projection.getCode();
+      if (!(projCode.substr(0, 5) === 'ESPG:')) {
+        throw 'Cannot handle projections without an ESPG well-known id';
+      }
+      let code = projCode.split(':')[1];
       let props = {
         f: 'geojson',
         returnGeometry: true,
@@ -45,12 +50,12 @@ function tiledVectorLayer(baseUrl, size, attributions, args, opts) {
           ymin: extent[1],
           xmax: extent[2],
           ymax: extent[3],
-          spatialReference: { wkid: projection.getCode()},
+          spatialReference: { wkid: code },
         }),
         geometryType: 'esriGeometryEnvelope',
-        inSR: projection.getCode(),
+        inSR: code,
         outFields: '*',
-        outSR: projection.getCode(),
+        outSR: code,
       };
       props = Object.assign(props, args || {});
       let url = baseUrl + '/query';
