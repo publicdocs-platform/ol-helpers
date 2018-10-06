@@ -45,12 +45,12 @@ function tiledVectorLayer(baseUrl, size, attributions, args, opts) {
           ymin: extent[1],
           xmax: extent[2],
           ymax: extent[3],
-          spatialReference: { wkid: 4326},
+          spatialReference: { wkid: projection.getCode()},
         }),
         geometryType: 'esriGeometryEnvelope',
-        inSR: 4326,
+        inSR: projection.getCode(),
         outFields: '*',
-        outSR: 4326,
+        outSR: projection.getCode(),
       };
       props = Object.assign(props, args || {});
       let url = baseUrl + '/query';
