@@ -37,8 +37,8 @@ function tiledVectorLayer(baseUrl, size, attributions, args, opts) {
     attributions: attributions || [],
     loader: function (extent, resolution, projection) {
       let projCode = projection.getCode();
-      if (!(projCode.substr(0, 5) === 'ESPG:')) {
-        throw 'Cannot handle projections without an ESPG well-known id';
+      if (!(projCode.substr(0, 5) === 'EPSG:')) {
+        throw 'Cannot handle projections without an EPSG well-known id';
       }
       let code = projCode.split(':')[1];
       let props = {
